@@ -54,6 +54,7 @@ function viewLogin(msg) {
       tab = 'patients'; query = ''; currentId = null;
       render();
     } catch (e) {
+      console.error(e); setTimeout(() => { err.textContent += ' [' + (e && e.name) + ': ' + (e && e.message) + ']'; }, 0);
       err.textContent = 'Λάθος κωδικός ή μη έγκυρο αρχείο.';
     }
   };
@@ -166,9 +167,30 @@ function viewPatient(p) {
         ${block('Βυθός ΔΟ', e.fundoscopyRight)}${block('Βυθός ΑΟ', e.fundoscopyLeft)}
         ${block('Σχόλια ΔΟ', e.eyeCommentsRight)}${block('Σχόλια ΑΟ', e.eyeCommentsLeft)}
         ${block('Σχόλια', e.comments)}${block('Σημειώσεις', e.notes)}
-        ${(e.images || []).length ? `<h3>Εικόνες (${e.images.length})</h3><div class="imgs">${e.images.map((im) => `<img loading="lazy" src="${esc(im.url)}" alt="${esc(im.name)}" title="${esc(im.name)}">`).join('')}</div>` : ''}
+        ${(e.images || []).length ? `<h3>Εικόνες (${e.images.length})</h3><div class="imgs">${e.images.map(imgTile).join('')}</div>` : ''}
       </div>`).join('') || '<div class="muted">Καμία επίσκεψη</div>'}`;
 }
+
+// Attachments may be images or PDFs (stored as data: URLs). PDFs cannot render in <img>, so show a tile that opens a blob URL.
+function imgTile(im) {
+  const url = String(im.url || '');
+  if (/^data:application\/pdf/i.test(url) || /\.pdf$/i.test(im.name || '')) {
+    return `<a class="pdf-tile" href="#" data-pdf="${esc(im.id)}" title="${esc(im.name)}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;border-radius:8px;background:#fee2e2;color:#991b1b;font-weight:700;text-decoration:none;font-size:12px;padding:4px;text-align:center;overflow:hidden"><span style="font-size:22px">PDF</span><span style="font-weight:400;word-break:break-all;max-height:3.6em;overflow:hidden">${esc(im.name)}</span></a>`;
+  }
+  return `<img loading="lazy" src="${esc(url)}" alt="${esc(im.name)}" title="${esc(im.name)}">`;
+}
+
+document.addEventListener('click', (ev) => {
+  const a = ev.target.closest && ev.target.closest('.pdf-tile');
+  if (!a) return;
+  ev.preventDefault();
+  let found = null;
+  for (const p of (data && data.patients) || []) for (const x of p.examinations || []) for (const im of x.images || []) if (im.id === a.dataset.pdf) found = im;
+  if (!found) return;
+  const bin = atob(String(found.url).split(',')[1]);
+  const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+  window.open(URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })), '_blank');
+});
 
 // Tap an image to view it full screen (pinch to zoom); tap again to close
 document.addEventListener('click', (ev) => {
