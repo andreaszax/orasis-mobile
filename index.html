@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f766e">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<title>ORASIS Mobile</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size:16px}
+header{background:#0f766e;color:#fff;padding:12px 14px;position:sticky;top:0;z-index:5;display:flex;gap:10px;align-items:center}
+header h1{font-size:18px;margin:0;flex:1}
+header button{background:#ffffff33;color:#fff;border:0;border-radius:8px;padding:6px 10px;font-size:14px}
+main{padding:12px;max-width:720px;margin:0 auto}
+.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 1px 3px #0001}
+input[type=text],input[type=password],input[type=search]{width:100%;padding:12px;font-size:16px;border:1px solid #cbd5e1;border-radius:10px}
+.btn{display:block;width:100%;padding:13px;font-size:16px;border:0;border-radius:10px;background:#0f766e;color:#fff;margin-top:10px}
+.btn.sec{background:#e2e8f0;color:#0f172a}
+.item{cursor:pointer}
+.item b{display:block}
+.muted{color:#64748b;font-size:14px}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tabs button{flex:1;padding:10px;border:0;border-radius:10px;background:#e2e8f0;font-size:15px}
+.tabs button.on{background:#0f766e;color:#fff}
+h3{margin:14px 0 6px;font-size:15px;color:#0f766e}
+.row{display:flex;gap:8px;padding:3px 0;border-bottom:1px solid #f1f5f9}
+.row span:first-child{color:#64748b;min-width:110px}
+.pre{white-space:pre-wrap}
+.err{color:#b91c1c;margin-top:8px}
+.eyes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.eyes div{background:#f8fafc;border-radius:8px;padding:8px;font-size:14px}
+.imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.imgs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:#e2e8f0}
+.lightbox{position:fixed;inset:0;background:#000e;z-index:50;display:flex;align-items:center;justify-content:center;overflow:auto}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;touch-action:pinch-zoom}
+.tag{display:inline-block;background:#fef3c7;border-radius:6px;padding:1px 6px;font-size:12px;margin-left:4px}
+</style>
+</head>
+<body>
+<header><h1 id="title">ORASIS Mobile</h1><button id="back" hidden>← Πίσω</button><button id="lock" hidden>Κλείδωμα</button></header>
+<main id="app"></main>
+<script src="app.js"></script>
+</body>
+</html>
